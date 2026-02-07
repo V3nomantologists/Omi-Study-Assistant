@@ -44,4 +44,19 @@ describe('intent router golden paths', () => {
     expect('toolName' in result && result.toolName).toBe('study_plan_tool');
     expect('action' in result && result.action).toBe('recommend');
   });
+
+  it('clarifies when quiz is asked with no course', () => {
+    const result = routeIntent({ userId, utterance: 'Quiz me' });
+    expect('question' in result).toBe(true);
+  });
+
+  it('clarifies when study is ambiguous with no course', () => {
+    const result = routeIntent({ userId, utterance: 'Study' });
+    expect('question' in result).toBe(true);
+  });
+
+  it('clarifies when adding notes without course context', () => {
+    const result = routeIntent({ userId, utterance: 'Add notes' });
+    expect('question' in result).toBe(true);
+  });
 });

@@ -1,56 +1,42 @@
 # Omi AI App Store – College Study & Exam Prep App
 
-## Purpose
-Voice-first Omi skill that ingests a student’s course materials and deadlines to deliver course-aware quizzes, study plans, and exam-focused help.
+## What it does
+Voice-first Omi skill that works only with the student’s stored courses and materials. It ingests PDFs/notes/voice transcripts, generates grounded quizzes, and produces short study plans aligned to upcoming exams and deadlines.
 
-## Core responsibilities
-- Intake courses with metadata (name, instructor, term) and track multiple concurrent courses.
-- Ingest and normalize PDFs, text notes, and voice transcripts into referenced knowledge chunks per course.
-- Generate targeted quizzes (flashcards, short-answer) tied to course materials and user performance.
-- Build study plans based on user-provided time and deadlines for exams/assignments.
-- Provide course-aware Q&A and exam guidance grounded in stored materials and timelines.
+## What it doesn’t do
+- No general-purpose chat or topics outside enrolled courses
+- No custom UI or mobile app surfaces (Omi conversation/tooling only)
+- No calendar/task manager replacement; relies on user-provided deadlines
+- No grading or plagiarism assistance
 
-## Explicit non-goals
-- General-purpose chat or topics outside enrolled courses.
-- Custom UI, mobile app, or frontend surfaces (Omi conversation/tooling only).
-- Calendar/task manager replacement; only user-provided deadlines unless integrated later.
-- Grading assignments or providing plagiarism assistance.
+## How it behaves
+- Prefers tool calls over freeform answers; one tool per turn
+- Asks at most one clarification when course/material context is missing
+- Cites course/material scope and refuses to fabricate content
+- Keeps responses short and voice-friendly; immediate execution for quiz/plan
+- Clarifies intent when utterances are ambiguous
+- One-time onboarding line: "I'll only use the courses and materials you add."
 
-## MVP (must-have)
-- Voice-first course intake with one active course limit (free tier baseline).
-- Reliable ingestion for PDF/text/voice into chunked, referenced knowledge.
-- Quiz generation (flashcards/short-answer) grounded in ingested material with daily caps.
-- Study plan generator that fits user-stated time and nearest exam/assignment date.
-- Course-aware Q&A with source grounding and minimal memory (course roster, materials, quiz history, weak/strong signals).
+## Design principles
+- Deterministic behavior over cleverness
+- Tool-first, no hallucination
+- Single clarification max
+- User-provided data only
 
-## Nice-to-have (excluded from MVP)
-- Multi-course concurrency beyond the free tier limit.
-- Adaptive spaced repetition with fine-grained mastery curves and latency tracking.
-- High-yield topic mining from syllabi/review sheets with weightings.
-- Advanced exam strategies (section-specific pacing, mixed-format drills).
-- Calendar integrations; automated deadline ingestion.
-- Collaborative/shared courses or instructor dashboards.
-
-## Monetization logic
-- Free: 1 course; 3 uploads/week; 20 quiz questions/day; 1 study plan/day; exam guidance for next 7 days; basic spaced review without personalization.
-- Paid: Up to 5 courses; unlimited uploads with priority; unlimited quizzes/study plans with adaptive difficulty; full exam prep with multi-exam scheduling, personalized spaced repetition, high-yield topic surfacing, and remediation sequences.
-- Upgrade reason: Cover all courses with unlimited, personalized exam prep and spaced reviews targeting weak spots.
+## Known limitations
+- Requires user to ingest materials; cannot answer without stored data
+- No grade predictions or guarantees
+- Simple JSON persistence (local, non-production)
+- Basic course-name matching; relies on course context or name mention
 
 ## Voice command intents (examples)
-### Setup
 - “Add Calculus II with Dr. Lee this term.”
 - “Upload my Week 3 Physics 201 lecture PDF.”
 - “Set Psych 101 midterm to March 12.”
-
-### Studying
 - “Quiz me on protein synthesis for Bio 110.”
-- “Give me a 20-minute study plan for today’s Econ readings.”
+- “What should I study today for CS?”
+- “Give me a 20-minute study plan for Econ readings.”
 - “Review the key proofs from last week’s Linear Algebra notes.”
-
-### Exams
 - “What should I focus on for Friday’s CS midterm?”
 - “Drill likely short answers for History 210.”
-
-### Review
 - “Summarize my most-missed flashcards from Chemistry.”
-- “Schedule a spaced review of stats formulas before the exam.”

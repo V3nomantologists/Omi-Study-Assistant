@@ -8,6 +8,8 @@ import { recommendStudyPlan } from './plans';
 import { QuizResponse } from './types';
 
 // Tool: course_tool
+export type CourseAction = 'create' | 'list' | 'get' | 'update' | 'delete' | 'addDeadline';
+
 export type CourseToolInput =
   | { action: 'create'; userId: string; name: string; code?: string; instructor?: string; term?: string }
   | { action: 'list'; userId: string }
@@ -80,6 +82,8 @@ export function material_list_tool(input: MaterialListToolInput) {
 }
 
 // Tool: quiz_tool
+export type QuizAction = 'generate' | 'submit';
+
 export type QuizToolInput =
   | { action: 'generate'; userId: string; courseId: string; topic?: string; limit?: number }
   | { action: 'submit'; courseId: string; sessionId: string; responses: QuizResponse[] };

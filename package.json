@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start": "ts-node src/index.ts",
-    "lint": "echo 'lint placeholder'"
+    "lint": "echo 'lint placeholder'",
+    "clean": "powershell -Command \"Remove-Item -ErrorAction SilentlyContinue data\\state.json\""
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

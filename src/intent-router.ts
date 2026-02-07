@@ -125,15 +125,22 @@ function extractCourseName(text: string): string | undefined {
 
 function matchCourseFromText(userId: string, text: string): string | undefined {
   const courses = listCourses(userId);
-  const normalizedText = text.toLowerCase();
+  const normalizedText = normalizeCourseName(text);
   let best: { id: string; score: number } | undefined;
   for (const course of courses) {
-    const name = course.name.toLowerCase();
+    const name = normalizeCourseName(course.name);
     const tokens = name.split(/\s+/).filter(Boolean);
-    const score = tokens.reduce((acc, token) => (normalizedText.includes(token) ? acc + 1 : acc), 0);
+    const score = tokens.reduce((acc, token) => (normalizedText.includes(token.replace(/\s+/g, '')) ? acc + 1 : acc), 0);
+    if (normalizedText.includes(name)) {
+      return course.id;
+    }
     if (score > 0 && (!best || score > best.score)) {
       best = { id: course.id, score };
     }
   }
   return best?.id;
+}
+
+function normalizeCourseName(name: string): string {
+  return name.toLowerCase().replace(/\s+/g, '');
 }
